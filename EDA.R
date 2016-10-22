@@ -27,5 +27,13 @@ plot(dtimes, tfb$num_reactions)
 plot(dtimes, tfb$num_comments)
 plot(dtimes, tfb$num_likes)
 
+## Narrowed analysis of the variety of reactions once they were released ##
+variety_of_reactions = tfb[tfb$num_loves>0,c("status_published","num_likes","num_loves","num_wows","num_sads","num_hahas","num_angrys")]
+
+post_emos_func = function(){
+  
+}
+
+
 
 

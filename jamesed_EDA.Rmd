@@ -15,25 +15,107 @@ This data was collected by another individual using open source technology such 
 The data can be found at this location:
 https://docs.google.com/spreadsheets/d/1mLO7SFqHmUaZEpp87cwkM0luJutSwmwKMx7kaM9348U/edit
 
+## Questions to answer
+
+Here are a few questions I'm hoping to answer through my analysis:
+
+- How did Trump's Facebook activity change after he announced his presidential candidacy?
+- What is the most common response from other Facebook users to his Facebook posts?
+  + Were these responses different before he announced his candidacy?
+- What were some contributing factors to some of his most popular posts? (date, subject, type of post, etc)
+
 ## Cleaning the data
 
-The data came in an xlsx format via a public google sheet. Once the data was downloaded to my local file system, I converted it to a csv file and attempted to read it into R-Studio. I immediately ran into problems with the formatting of the data. The biggest issue was the "status_message" column, which included facebook status messages with all the punctuation included. Read.csv() misinterpreted the punctuation in the status messages and it threw off the formatting.
+The data came in an xlsx format via a public google sheet. Once the data was downloaded to my local file system, I converted it to a csv file and attempted to read it into R-Studio. I immediately ran into problems with the formatting of the data. The biggest issue was the "status_message" column, which included Facebook status messages with all the punctuation included. Read.csv() misinterpreted the punctuation in the status messages and it threw off the formatting.
 After removing the punctuation in excel with the "find and replace" functionality, I easily imported the data into R-Studio.
 
-## About the data
-High level overview of the data
+## Data Summary
 
-```{r overview}
+```{r summary, echo=FALSE}
 tfb = read.csv("trump_fb_analysis.csv")
 summary(tfb)
 ```
+The columns are as listed:
 
-## Including Plots
+- status_id
+- status_message
+- link_name
+- status_type
+- status_published
+- num_reactions
+- num_comments
+- num_shares
+- num_likes
+- num_loves
+- num_wows
+- num_hahas
+- num_sads
+- num_angrys
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Data Structures
+Here is the structure of the data, along with the data types contained in this data set.
+
+```{r structure, echo=FALSE}
+str(tfb)
+```
+As seen above (or if it isn't rendering properly), the data types found in the data are listed below.
+
+- Factor
+- int
+
+For further analysis, some of the columns that are listed as Factors will need to be changed to plain strings since they are not categorical. For example, the status_message column has unique values for every single entry. This will need to be changed to a type char.
+
+## Exploratory Statistics
+By viewing a summary and boxplot of the overall reactions, I can already see that a lot of work needs to be done on the data. There are an overwhelming amount of outliers, which means the data is heavily skewed and would best be analyzed by taking subsets of the data, most likely depending on the status_published date variable.
+
+```{r num_reactions boxplot, echo=FALSE}
+summary(tfb$num_reactions)
+boxplot(tfb$num_reactions)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Exploratory Plots
+
+These initial plots help me understand the data at a high level. Identifying possible trends and areas of interest will help me answer my questions.
+
+### Barplot of types of reactions
+
+An initial plotting of the reactions to his Facebook posts is interesting. You'll notice an overwhelming majority of the reactions belong to a single category. This is mostly due to Facebook's reaction updates within the past year to add more emotions for various reactions, instead of the single "like" button.
+
+```{r reactions_plot, echo=FALSE}
+## Explore the spread of numeric reactions
+total_reactions = sum(tfb$num_reactions, na.rm=TRUE)
+total_comments = sum(tfb$num_comments, na.rm=TRUE)
+total_shares = sum(tfb$num_shares, na.rm=TRUE)
+total_likes = sum(tfb$num_likes, na.rm=TRUE)
+total_loves = sum(tfb$num_loves, na.rm=TRUE)
+total_wows = sum(tfb$num_wows, na.rm=TRUE)
+total_hahas = sum(tfb$num_hahas, na.rm=TRUE)
+total_sads = sum(tfb$num_sads, na.rm=TRUE)
+total_angrys = sum(tfb$num_angrys, na.rm=TRUE)
+
+sum_nums = c("total_reactions" = total_reactions, "total_comments" = total_comments, "total_shares" = total_shares, "total_likes" = total_likes, "total_loves"=total_loves, "total_wows"=total_wows, "total_hahas"=total_hahas, "total_sads"=total_sads, "total_angrys" = total_angrys)
+
+barplot(sum_nums,col=c("red","blue"))
+```
+
+### Timeline scatter plot of reactions
+Below is a scatter plot of reactions over time. This is a huge indicator that his Facebook activity took a sharp increase just before 2016. Before then, his activity had been relatively stable. It is curious to note the year 2013 where there is a massive spike of reactions to as least one of his posts. It is worth investigating what that was and why it was so relevant.
+
+```{r timeline_reactions, echo=FALSE}
+dtimes = as.Date(tfb$status_published, format="%m/%d/%Y")
+plot(dtimes, tfb$num_reactions)
+
+```
+
+## Types of analysis
+### Linear Regression
+To see positive or negative trends for any certain type of reaction or certain type of post, linear regression will come in handy to see those relationships over time. 
+### Text Analysis
+Donald Trump's Facebook status messages most likely contain trends with specific words or phrases. I will deploy text analysis to view these trends and get a better idea of what phrases or words resulted in the highest number of reactions, and what type of reactions his posts received.
+### Other types of analysis
+I plan on performing other applicable types of analysis, depending on the situation. I'm still relatively new to R and plan to continue to learn what types of analysis would be most beneficial.
+
+
+
+
