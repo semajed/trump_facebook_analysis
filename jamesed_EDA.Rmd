@@ -1,0 +1,39 @@
+---
+title: "Exploratory Data Analysis: An objective analysis of Donald Trump's facebook activity"
+author: "James Dayhuff"
+date: "October 22, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data origins
+
+This data was collected by another individual using open source technology such as python and git. The data was then published to the public for free analysis.
+The data can be found at this location:
+https://docs.google.com/spreadsheets/d/1mLO7SFqHmUaZEpp87cwkM0luJutSwmwKMx7kaM9348U/edit
+
+## Cleaning the data
+
+The data came in an xlsx format via a public google sheet. Once the data was downloaded to my local file system, I converted it to a csv file and attempted to read it into R-Studio. I immediately ran into problems with the formatting of the data. The biggest issue was the "status_message" column, which included facebook status messages with all the punctuation included. Read.csv() misinterpreted the punctuation in the status messages and it threw off the formatting.
+After removing the punctuation in excel with the "find and replace" functionality, I easily imported the data into R-Studio.
+
+## About the data
+High level overview of the data
+
+```{r overview}
+tfb = read.csv("trump_fb_analysis.csv")
+summary(tfb)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

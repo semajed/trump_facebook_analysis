@@ -1,6 +1,9 @@
 #### EDA FOR AN OBJECTIVE ANALYSIS OF TRUMP'S FACEBOOK ACTIVITY ####
 tfb = read.csv("trump_fb_analysis.csv")
 
+### Big picture perspective of the data
+str(tfb)
+
 ## Explore the spread of numeric reactions
 total_reactions = sum(tfb$num_reactions, na.rm=TRUE)
 total_comments = sum(tfb$num_comments, na.rm=TRUE)
