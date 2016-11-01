@@ -7,6 +7,8 @@ require(SnowballC)
 require(sentimentr)
 require(qdap)
 
+library(sentiment)
+
 try.error = function(x)
 {
   y = NA
@@ -56,4 +58,7 @@ frequency = sort(frequency, decreasing=TRUE)
 head(frequency)
 
 words = names(frequency)
+
+
+
 

@@ -39,6 +39,15 @@ plot(dtimes, tfb$num_reactions)
 ## dates and reactions post facebook reaction release
 plot(reactions_released_tfb$status_published, reactions_released_tfb$num_reactions)
 
+boxplot(reactions_released_tfb$num_reactions)
+boxplot(reactions_released_tfb$num_likes)
+boxplot(reactions_released_tfb$num_loves)
+boxplot(reactions_released_tfb$num_hahas)
+boxplot(reactions_released_tfb$num_wows)
+boxplot(reactions_released_tfb$num_angrys)
+boxplot(reactions_released_tfb$num_sads)
+
+
 ## dates and reactions post trump announcement
 plot(trump_announce_tfb$status_published, trump_announce_tfb$num_reactions)
 ### TODO: FIND LINEAR TREND OF THE ABOVE GRAPH
