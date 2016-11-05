@@ -1,4 +1,4 @@
-library(sentiment)
+library(sentimentr)
 
 try.error = function(x)
 {
