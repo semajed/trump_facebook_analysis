@@ -1,6 +1,20 @@
 Things to do:
 
-Box plots for each reaction
-Sentiment Analysis
-Cluster words together
-implement ggplot2 for prettier visualizations
+Box plots for each reaction - done
+Sentiment Analysis - doneish
+Cluster words together - done
+implement ggplot2 for prettier visualizations - low priority
+
+Possible re-parse the data to get rid of punctuation but leave spaces where they were
+
+
+Presentation:
+- clearly state the purpose of the presentation
+  - what problem was solved
+  - what question was answered
+- present data
+  - brief description
+  - provide results from EDA
+    -plots, tables, etc
+  - make connections with data and original purpose
+- detail the methodology employed to solve problem/answer question

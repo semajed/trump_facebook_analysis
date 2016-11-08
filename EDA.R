@@ -1,3 +1,5 @@
+
+
 #### EDA FOR AN OBJECTIVE ANALYSIS OF TRUMP'S FACEBOOK ACTIVITY ####
 tfb = read.csv("trump_fb_analysis.csv")
 
@@ -34,10 +36,10 @@ barplot(sum_nums,col=c("green","blue"))
 dtimes = as.Date(tfb$status_published, format="%m/%d/%Y")
 head(dtimes)
 tail(dtimes)
-plot(dtimes, tfb$num_reactions)
+qplot(dtimes, tfb$num_reactions)
 
 ## dates and reactions post facebook reaction release
-plot(reactions_released_tfb$status_published, reactions_released_tfb$num_reactions)
+qplot(reactions_released_tfb$status_published, reactions_released_tfb$num_reactions)
 
 boxplot(reactions_released_tfb$num_reactions)
 boxplot(reactions_released_tfb$num_likes)
@@ -49,7 +51,7 @@ boxplot(reactions_released_tfb$num_sads)
 
 
 ## dates and reactions post trump announcement
-plot(trump_announce_tfb$status_published, trump_announce_tfb$num_reactions)
+qplot(trump_announce_tfb$status_published, trump_announce_tfb$num_reactions)
 ### TODO: FIND LINEAR TREND OF THE ABOVE GRAPH
 
 ## Subset data - this slice is based on the date of the facebook reactions
@@ -67,7 +69,5 @@ barplot(sum_nums2_with_likes,col=c("red","blue"))
 sum_nums2_no_likes = c("total_loves"=total_loves, "total_wows"=total_wows, "total_hahas"=total_hahas, "total_sads"=total_sads, "total_angrys" = total_angrys)
 
 barplot(sum_nums2_no_likes,col=c("red","blue"))
-
-
 
 
