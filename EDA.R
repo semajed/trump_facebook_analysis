@@ -71,3 +71,13 @@ sum_nums2_no_likes = c("total_loves"=total_loves, "total_wows"=total_wows, "tota
 barplot(sum_nums2_no_likes,col=c("red","blue"))
 
 
+
+### Trump announce analysis
+plot(trump_announce_tfb$status_published, trump_announce_tfb$num_angrys)
+qplot(trump_announce_tfb$status_published, trump_announce_tfb$num_likes)
+qplot(trump_announce_tfb$status_published, trump_announce_tfb$num_shares)
+qplot(trump_announce_tfb$status_published, trump_announce_tfb$num_comments)
+
+fit = lm(trump_announce_tfb$num_angrys~trump_announce_tfb$status_published)
+co = coef(fit)
+abline(co, col="red")
