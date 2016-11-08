@@ -37,6 +37,7 @@ pol_bestfit = as.data.frame(pol[,4])
 plot(pol_bestfit)
 
 emos = levels(factor(analysis[,1:6]))
+View(emos)
 
 
 
