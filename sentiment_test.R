@@ -1,4 +1,5 @@
 library(sentiment)
+library(syuzhet)
 
 try.error = function(x)
 {
