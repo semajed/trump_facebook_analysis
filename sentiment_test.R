@@ -1,4 +1,5 @@
-library(sentiment)
+require(sentiment)
+require(sentimentr)
 library(syuzhet)
 
 try.error = function(x)
@@ -12,7 +13,9 @@ try.error = function(x)
 
 tfb = read.csv("trump_fb_analysis.csv")
 
-status_messages = lapply(tfb$status_message[1:100], as.character)
+tfb = tfb[!is.na(tfb$status_message),]
+
+status_messages = lapply(tfb$status_message, as.character)
 status_messages = gsub("[[:punct:]]", "", status_messages)
 status_messages = gsub("[[:digit:]]", "", status_messages)
 status_messages = gsub("http\\w+", "", status_messages)
@@ -36,9 +39,7 @@ plot(sen$sentiment)
 pol = classify_polarity(status_messages,algorithm="bayes")
 pol_bestfit = as.data.frame(pol[,4])
 plot(pol_bestfit)
-
-emos = levels(factor(analysis[,1:6]))
-View(emos)
+tfb$sentiment = pol_bestfit
 
 
 
