@@ -3,8 +3,11 @@
 #### EDA FOR AN OBJECTIVE ANALYSIS OF TRUMP'S FACEBOOK ACTIVITY ####
 tfb = read.csv("trump_fb_analysis.csv")
 
+tfb300 = tfb[1:300,]
+
 ##change format of the dates
 tfb$status_published = as.Date(tfb$status_published, "%m/%d/%Y")
+tfb300$status_published = as.Date(tfb300$status_published, "%m/%d/%Y")
 
 ## subset data based on release of multiple reactions for facebook
 reactions_released_tfb = tfb[tfb$status_published>"2016-02-25",]
@@ -37,6 +40,12 @@ dtimes = as.Date(tfb$status_published, format="%m/%d/%Y")
 head(dtimes)
 tail(dtimes)
 qplot(dtimes, tfb$num_reactions)
+
+## dates and reactions latest 300
+dtimes = as.Date(tfb300$status_published, format="%m/%d/%Y")
+head(dtimes)
+tail(dtimes)
+qplot(dtimes, tfb300$num_reactions)
 
 ## dates and reactions post facebook reaction release
 qplot(reactions_released_tfb$status_published, reactions_released_tfb$num_reactions)
@@ -72,12 +81,19 @@ barplot(sum_nums2_no_likes,col=c("red","blue"))
 
 
 
-### Trump announce analysis
-plot(trump_announce_tfb$status_published, trump_announce_tfb$num_angrys)
+### Trump announce analysis, linear model
+qplot(trump_announce_tfb$status_published, trump_announce_tfb$num_reactions)
 qplot(trump_announce_tfb$status_published, trump_announce_tfb$num_likes)
 qplot(trump_announce_tfb$status_published, trump_announce_tfb$num_shares)
 qplot(trump_announce_tfb$status_published, trump_announce_tfb$num_comments)
 
-fit = lm(trump_announce_tfb$num_angrys~trump_announce_tfb$status_published)
+fit = lm(trump_announce_tfb$num_reactions~trump_announce_tfb$status_published)
 co = coef(fit)
 abline(co, col="red")
+
+
+## look at highest reactions messages
+tfb_ordered = tfb[order(tfb$num_reactions),]
+tfb_most = tail(tfb_ordered)
+
+

@@ -4,6 +4,10 @@ Box plots for each reaction - done
 Sentiment Analysis - doneish
 Cluster words together - done
 implement ggplot2 for prettier visualizations - low priority
+Look at posts with highest reactions, the outliers
+Exponential instead of linear?
+
+
 
 Possible re-parse the data to get rid of punctuation but leave spaces where they were
 

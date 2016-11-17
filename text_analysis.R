@@ -19,6 +19,7 @@ try.error = function(x)
 }
 
 tfb = read.csv("trump_fb_analysis.csv")
+tfb = tfb[!is.na(tfb$status_message),]
 
 status_messages = lapply(tfb$status_message, as.character)
 
@@ -26,22 +27,24 @@ head(status_messages)
 str(status_messages)
 class(status_messages)
 
-status_messages = gsub("[[:punct:]]", "", status_messages)
-status_messages = gsub("[[:digit:]]", "", status_messages)
-status_messages = gsub("http\\w+", "", status_messages)
-status_messages = gsub("[ \t]{2,}", "", status_messages)
-status_messages = gsub("^\\s+|\\s+$", "", status_messages)
+status_messages = gsub("[[:punct:]]", " ", status_messages)
+status_messages = gsub("[[:digit:]]", " ", status_messages)
+status_messages = gsub("http\\w+", " ", status_messages)
+status_messages = gsub("http", " ", status_messages)
+status_messages = gsub("com", " ", status_messages)
+status_messages = gsub("[ \t]{2,}", " ", status_messages)
+status_messages = gsub("^\\s+|\\s+$", " ", status_messages)
 
 status_messages = sapply(status_messages, try.error)
 status_messages = status_messages[!is.na(status_messages)]
 names(status_messages) = NULL
 
 ### Word clouds ###
-recent_100 = wordcloud(status_messages[1:100], colors=c("red","blue"))
-tail_cloud = wordcloud(tail(status_messages,n=100),colors=c("blue","red"))
+recent_300 = wordcloud(status_messages[1:300], colors=c("red","blue"))
+tail_cloud = wordcloud(tail(status_messages[1:100],n=100),colors=c("blue","red"))
 
 ## learning the tm library ##
-sub_status_messages = status_messages[1:100]
+sub_status_messages = status_messages[1:200]
 
 sub_text_all = paste(sub_status_messages, collapse = " ")
 
