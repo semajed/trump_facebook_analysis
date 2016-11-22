@@ -1,6 +1,5 @@
 require(sentiment)
 require(sentimentr)
-library(syuzhet)
 
 try.error = function(x)
 {

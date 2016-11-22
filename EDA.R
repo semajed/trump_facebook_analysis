@@ -96,4 +96,10 @@ abline(co, col="red")
 tfb_ordered = tfb[order(tfb$num_reactions),]
 tfb_most = tail(tfb_ordered)
 
+most_reactions = tfb[which.max(tfb$num_reactions),]
+most_comments = tfb[which.max(tfb$num_comments),]
+most_shares = tfb[which.max(tfb$num_shares),]
+
+
+
 
