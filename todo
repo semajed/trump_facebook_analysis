@@ -1,8 +1,5 @@
 Things to do:
 
-Box plots for each reaction - done
-Sentiment Analysis - doneish
-Cluster words together - done
 implement ggplot2 for prettier visualizations - low priority
 Look at posts with highest reactions, the outliers
 Exponential instead of linear?
@@ -32,6 +29,29 @@ Presentation:
 - conclusions
   - implications of analysis
   - big picture
+  
+PRESENTATION
+- Purpose: To analyze Trump's facebook behavior & other's reactions to it
+  - Questions:
+    - How did Trump's Facebook activity change after he announced his presidential candidacy?
+    - What were his most popular topics of interest?
+- Present Data
+  - Look at a single observation and describe each variable
+  - Explain the process of cleaning the data
+  - str(data)
+  - EDA Results
+    - Time series (explain the need to split the data)
+    - Box plots of reactions
+    - Compare # of reactions with bar plots
+    - Standard Deviation differences
+- Answering the questions
+  - How did Trump's Facebook activity change after he announced his presidential candidacy?
+      - (time series)
+      - (linear regression of responses)
+  - What were his most popular topics of interest?
+      - (word cloud)
+        - (word cloud of most liked posts)
+      - (sentiment analysis) + feature engineering
   
   
   
