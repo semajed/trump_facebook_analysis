@@ -14,6 +14,33 @@ reactions_released_tfb = tfb[tfb$status_published>"2016-02-25",]
 
 ## subset data based on trump's announcement for presidency
 trump_announce_tfb = tfb[tfb$status_published>"2015-06-16",]
+before_announcement = tfb[tfb$status_published<"2015-06-16",]
+
+before_numposts = nrow(before_announcement)
+after_numposts = nrow(trump_announce_tfb)
+
+
+before_numdays = difftime("2015-06-13", "2009-04-19", unit=c("days"))
+after_numdays = difftime("2016-10-17", "2015-06-13", unit=c("days"))
+
+my_matrix = matrix(c(before_numposts, after_numposts, before_numdays, after_numdays),nrow=2, ncol=2)
+before_rate = 1119/2246
+after_rate = 3039/492
+
+diff_rate = after_rate - before_rate
+per_inc_rate = (diff_rate/before_rate)*100
+
+
+before_reactions = before_announcement$num_reactions
+before_sum = sum(before_reactions, na.rm = TRUE)
+after_reactions = trump_announce_tfb$num_reactions
+after_sum = sum(after_reactions, na.rm = TRUE)
+
+diff_sum = after_sum - before_sum
+per_inc_sum = (diff_sum/before_sum)*100
+
+
+
 
 ### Big picture perspective of the data
 str(tfb)
@@ -32,6 +59,7 @@ total_angrys = sum(tfb$num_angrys, na.rm=TRUE)
 sum_nums = c("total_reactions" = total_reactions, "total_comments" = total_comments, "total_shares" = total_shares, "total_likes" = total_likes, "total_loves"=total_loves, "total_wows"=total_wows, "total_hahas"=total_hahas, "total_sads"=total_sads, "total_angrys" = total_angrys)
 
 barplot(sum_nums,col=c("green","blue"))
+
 
 #### EXPLORE THE DATES and REACTIONS ####
 
@@ -99,6 +127,20 @@ tfb_most = tail(tfb_ordered)
 most_reactions = tfb[which.max(tfb$num_reactions),]
 most_comments = tfb[which.max(tfb$num_comments),]
 most_shares = tfb[which.max(tfb$num_shares),]
+most_angrys = tfb[which.max(tfb$num_likes),]
+
+
+date_freq = as.Date(tfb$status_published, format="%m/%d/%Y")
+date_freq_asFact = as.factor(date_freq)
+counted = count(date_freq_asFact)
+qplot(counted$x, counted$freq)
+
+fit = lme(counted$x~counted$freq)
+co = coef(fit)
+abline(co, col="red")
+
+
+
 
 
 

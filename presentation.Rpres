@@ -1,0 +1,326 @@
+Donald Trump on Facebook
+========================================================
+author: James Dayhuff
+date: 12/8/2016
+autosize: true
+css: my_style.css
+
+Purpose
+========================================================
+
+To objectively analyze Donald Trump's behavior on Facebook and other's reactions to him.
+
+(Facebook posts from 2009 - 2016)
+
+Questions to be answered:
+
+- How did Trump's Facebook behavior change after he announced his presidential candidacy?
+- How did the responses to his Facebook behavior change over time?
+- What were his most popular topics of interest?
+
+Note: This analysis is purely descriptive analytics, not predictive.
+
+The Data
+========================================================
+
+Number of observations: 4162
+
+| Variable Name | Data Type |
+|------:|:-----|
+| Status_id  |  Useless  |
+| Status_message  |  Character |
+| Link_name  |    Character |
+| Status_type  |    Character |
+| Status_Published  |    Date |
+| Num_reactions  |    Int |
+| Num_comments  |    Int |
+| Num_shares  |    Int |
+| Num_likes  |    Int |
+| Num_loves  |    Int |
+| Num_wows  |    Int |
+| Num_hahas  |    Int |
+| Num_sads  |    Int |
+| Num_angrys  |    Int |
+
+
+EDA - Numeric variables compared
+========================================================
+
+```{r, echo=FALSE, fig.width=20, fig.height=10}
+tfb = read.csv("trump_fb_analysis.csv")
+tfb$status_published = as.Date(tfb$status_published, "%m/%d/%Y")
+## Explore the spread of numeric reactions
+total_reactions = sum(tfb$num_reactions, na.rm=TRUE)
+total_comments = sum(tfb$num_comments, na.rm=TRUE)
+total_shares = sum(tfb$num_shares, na.rm=TRUE)
+total_likes = sum(tfb$num_likes, na.rm=TRUE)
+total_loves = sum(tfb$num_loves, na.rm=TRUE)
+total_wows = sum(tfb$num_wows, na.rm=TRUE)
+total_hahas = sum(tfb$num_hahas, na.rm=TRUE)
+total_sads = sum(tfb$num_sads, na.rm=TRUE)
+total_angrys = sum(tfb$num_angrys, na.rm=TRUE)
+
+sum_nums = c("comments" = total_comments, "shares" = total_shares, "reactions" = total_reactions, "likes" = total_likes,  "loves"=total_loves, "wows"=total_wows, "hahas"=total_hahas, "sads"=total_sads, "angrys" = total_angrys)
+
+
+barplot(sum_nums,col=c("red","blue"), las=2)
+
+```
+
+Num_Reactions turns out to be the cumulative of all variables except comments and shares.
+
+The lowest values (loves, wows, hahas, sads, angrys) occur because those reactions were only recently available in Feburary 2016. We need to subset the data once we begin our actual investigation.
+
+
+EDA - Summary of numeric variables
+========================================================
+
+| Variable Name | Min | Median | Mean | Max | Skewness |
+|------:|:-----:|:-----|:-----|:-----|:-----|
+| num_comments  |  3  | 3,456 | 5,111  | 319,700 | Right Skew |
+| num_shares  |  0 | 3,146 | 7,560  | 812,800  | Right Skew |
+| num_reactions  | 7 | 42,600 | 56,160  | 1,118,000  | Right Skew |
+| num_likes  | 7 | 39,960  | 53,050  | 1,118,000  | Right Skew |
+
+Dealing with massive ranges.
+
+There is a right skew to every variable.
+
+(This is excluding the newest Facebook reactions because they were released during his election campaign.)
+
+
+Back to original questions
+========================================================
+How did Trump's Facebook behavior change after he announced his presidential candidacy?
+
+How did the responses to his Facebook behavior change over time?
+
+What were his most popular topics of interest?
+  
+
+How did Trump's Facebook behavior change after his announcement?
+========================================================
+
+```{r, echo=FALSE, fig.width=20, fig.height=10}
+library(plyr)
+date_freq = as.Date(tfb$status_published, format="%m/%d/%Y")
+date_freq.as_num = as.numeric(as.Date(date_freq, tz="UTC"))
+date_freq.as_num = as.numeric(date_freq.as_num)/(24*60*60)
+counted1 = count(date_freq.as_num)
+
+plot(counted1$x, counted1$freq, xlab = "Date", ylab = "Frequency of posts")
+
+fit1 = lm(counted1$x~counted1$freq)
+co1 = coef(fit1)
+
+
+```
+
+Highly significant relationship, P-value of <2e-16
+
+Compare before announcement to after announcement:
+  - Percent Increase of 1139% (from posting rate of .498/day to 6.17/day)
+
+
+
+
+How did the responses to his Facebook behavior change over time?
+========================================================
+
+```{r, echo=FALSE, fig.width=20, fig.height=10}
+
+dtimes = as.Date(tfb$status_published, format="%m/%d/%Y")
+dtimes.as_num = as.numeric(as.Date(dtimes, tz="UTC"))
+dtimes.as_num = as.numeric(dtimes)/(24*60*60)
+plot(dtimes, tfb$num_reactions, xlab="Date", ylab="Number of Reactions")
+
+fit2 = lm(tfb$num_reactions~dtimes.as_num)
+co2 = coef(fit2)
+abline(co2, col="red")
+
+```
+
+Highly significant relationship, P-value of <2e-16
+
+Compare before announcement to post announcement:
+  - Percent Increase of 1895% (from ~11 mil total reactions to ~222 mil total reactions)
+
+
+
+
+How did the responses change over the course of his campaign?
+========================================================
+
+
+```{r, echo=FALSE, fig.width=20, fig.height=10}
+trump_announce_tfb = tfb[tfb$status_published>"2015-06-16",]
+dtime_announce = as.Date(trump_announce_tfb$status_published, format="%m/%d/%Y")
+
+dtime_announce.as_num = as.numeric(as.Date(dtime_announce, tz="UTC"))
+dtime_announce.as_num = as.numeric(dtime_announce)/(24*60*60)
+
+plot(dtime_announce.as_num, trump_announce_tfb$num_reactions)
+
+fit3 = lm(trump_announce_tfb$num_reactions~dtime_announce.as_num)
+co3 = coef(fit3)
+abline(co3, col="red")
+
+```
+
+Time of post loses signifance once campaign began
+
+P-value of 0.26
+
+
+
+Fun Fact 1
+========================================================
+
+Most Likes: 1,117,712 
+```{r, echo=FALSE, fig.width=20, fig.height=10}
+most_reactions = tfb[which.max(tfb$num_reactions),]
+pop_react = as.character(most_reactions$status_message)
+pop_react
+```
+
+
+Fun Fact 2
+========================================================
+
+Most Angrys: 84,015
+```{r, echo=FALSE, fig.width=20, fig.height=10}
+most_angrys = tfb[which.max(tfb$num_angrys),]
+pop_angry = as.character(most_angrys$status_message)
+pop_angry
+```
+
+Fun Fact 3
+========================================================
+
+Most Comments: 319,745
+```{r, echo=FALSE, fig.width=20, fig.height=10}
+most_comments = tfb[which.max(tfb$num_comments),]
+pop_comment_name = as.character(most_comments$link_name)
+pop_comment_type = as.character(most_comments$status_type)
+pop_comment_date = as.Date(most_comments$status_published, format="%m/%d/%Y")
+pop_comment_name
+pop_comment_type
+pop_comment_date
+
+```
+
+
+
+
+What were his most popular topics of interest?
+========================================================
+For the most recent 100 Facebook posts...
+
+```{r, echo=FALSE}
+library(devtools)
+library(ggplot2)
+library(wordcloud)
+library(RColorBrewer)
+library(tm)
+library(SnowballC)
+library(sentimentr)
+library(qdap)
+
+library(sentiment)
+
+try.error = function(x)
+{
+  y = NA
+  try_error = tryCatch(tolower(x), error=function(e) e)
+  if (!inherits(try_error, "error"))
+    y = tolower(x)
+  return(y)
+}
+
+tfb = read.csv("trump_fb_analysis.csv")
+tfb = tfb[!is.na(tfb$status_message),]
+
+status_messages = lapply(tfb$status_message, as.character)
+
+status_messages = gsub("[[:punct:]]", " ", status_messages)
+status_messages = gsub("[[:digit:]]", " ", status_messages)
+status_messages = gsub("http\\w+", " ", status_messages)
+status_messages = gsub("http", " ", status_messages)
+status_messages = gsub("com", " ", status_messages)
+status_messages = gsub("[ \t]{2,}", " ", status_messages)
+status_messages = gsub("^\\s+|\\s+$", " ", status_messages)
+
+status_messages = sapply(status_messages, try.error)
+status_messages = status_messages[!is.na(status_messages)]
+names(status_messages) = NULL
+
+### Word clouds ###
+tail_cloud = wordcloud(tail(status_messages[1:100],n=100),colors=c("blue","red"))
+```
+
+
+Bonus Question: What sentiment did he express most?
+========================================================
+
+```{r, echo=FALSE, fig.width=20, fig.height=10}
+require(sentiment)
+require(sentimentr)
+
+try.error = function(x)
+{
+  y = NA
+  try_error = tryCatch(tolower(x), error=function(e) e)
+  if (!inherits(try_error, "error"))
+    y = tolower(x)
+  return(y)
+}
+
+tfb = read.csv("trump_fb_analysis.csv")
+
+tfb = tfb[!is.na(tfb$status_message),]
+
+status_messages = lapply(tfb$status_message, as.character)
+status_messages = gsub("[[:punct:]]", " ", status_messages)
+status_messages = gsub("[[:digit:]]", " ", status_messages)
+status_messages = gsub("http\\w+", " ", status_messages)
+status_messages = gsub("[ \t]{2,}", " ", status_messages)
+status_messages = gsub("^\\s+|\\s+$", " ", status_messages)
+
+status_messages = sapply(status_messages, try.error)
+status_messages = status_messages[!is.na(status_messages)]
+names(status_messages) = NULL
+
+## polarity
+pol = classify_polarity(status_messages,algorithm="bayes")
+pol_bestfit = as.data.frame(pol[,4])
+plot(pol_bestfit)
+```
+
+
+
+Conclusion
+========================================================
+
+How did Trump's Facebook behavior change after he announced his presidential candidacy?
+  - Percent Increase of 1139%
+
+How did the responses to his Facebook behavior change over time?
+  - Percent Increase of 1895%
+
+What were his most popular topics of interest?
+  - Hillary Clinton
+  - Make America Great Again
+  
+  
+Future Analysis
+========================================================
+
+Predict number of reactions based on a text analysis of word choice.
+
+Cluster his Facebook posts based on text analysis of word choice or on number of reactions.
+
+
+
+========================================================
+Thank you
+

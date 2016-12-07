@@ -40,28 +40,32 @@ status_messages = status_messages[!is.na(status_messages)]
 names(status_messages) = NULL
 
 ### Word clouds ###
-recent_300 = wordcloud(status_messages[1:300], colors=c("red","blue"))
-tail_cloud = wordcloud(tail(status_messages[1:100],n=100),colors=c("blue","red"))
-
-## learning the tm library ##
-sub_status_messages = status_messages[1:200]
-
-sub_text_all = paste(sub_status_messages, collapse = " ")
-
-text_source = VectorSource(sub_text_all)
-corpus = Corpus(text_source)
-corpus = tm_map(corpus, stripWhitespace)
-corpus = tm_map(corpus, removeWords, stopwords("english"))
-
-dtm = DocumentTermMatrix(corpus)
-dtm2 = as.matrix(dtm)
-
-frequency = colSums(dtm2)
-frequency = sort(frequency, decreasing=TRUE)
-head(frequency)
-
-words = names(frequency)
+# recent_300 = wordcloud(status_messages[1:300], colors=c("red","blue"))
+tail_cloud = wordcloud(tail(status_messages[1:100],n=100),colors=c("blue","red"), max.words=2)
 
 
 
-
+# 
+# 
+# ## learning the tm library ##
+# sub_status_messages = status_messages[1:200]
+# 
+# sub_text_all = paste(sub_status_messages, collapse = " ")
+# 
+# text_source = VectorSource(sub_text_all)
+# corpus = Corpus(text_source)
+# corpus = tm_map(corpus, stripWhitespace)
+# corpus = tm_map(corpus, removeWords, stopwords("english"))
+# 
+# dtm = DocumentTermMatrix(corpus)
+# dtm2 = as.matrix(dtm)
+# 
+# frequency = colSums(dtm2)
+# frequency = sort(frequency, decreasing=TRUE)
+# head(frequency)
+# 
+# words = names(frequency)
+# 
+# 
+# 
+# 

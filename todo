@@ -40,10 +40,11 @@ PRESENTATION
   - Explain the process of cleaning the data
   - str(data)
   - EDA Results
-    - Time series (explain the need to split the data)
     - Box plots of reactions
     - Compare # of reactions with bar plots
     - Standard Deviation differences
+    - Time series
+      - Splitting the data based on time
 - Answering the questions
   - How did Trump's Facebook activity change after he announced his presidential candidacy?
       - (time series)

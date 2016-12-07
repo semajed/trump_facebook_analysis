@@ -21,3 +21,5 @@ sd.df = data.frame(sd.reactions,sd.likes,sd.comments,sd.shares,sd.hahas,sd.angry
 
 ## get just the numeric columns
 num_columns = tfb[,6:14]
+
+plot(num_columns)
